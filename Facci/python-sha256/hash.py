@@ -18,9 +18,10 @@ def sha256(message):
         # Appends 48 arrays of 32 bits of 0's in the end of the "w" list
         for _ in range(48):
             w.append(32 * [0])
-        # Iterates the "w" list starting at the first array of 0's chunks added one a step after
+        # Iterates the "w" list starting at the first array of 0 chunks added a step before
+        # Logic to mix everything to turn the input in a hash
         for i in range(16, 64):
-            s0 = XORXOR(rotr(w[i - 15], 7), rotr(w[i - 15], 18), shr(w[i - 15], 3) ) 
+            s0 = XORXOR(rotr(w[i - 15], 7), rotr(w[i - 15], 18), shr(w[i - 15], 3))
             s1 = XORXOR(rotr(w[i - 2], 17), rotr(w[i - 2], 19), shr(w[i - 2], 10))
             w[i] = add(add(add(w[i - 16], s0), w[i - 7]), s1)
         a = h0
@@ -31,8 +32,9 @@ def sha256(message):
         f = h5
         g = h6
         h = h7
+        # More mixing
         for j in range(64):
-            S1 = XORXOR(rotr(e, 6), rotr(e, 11), rotr(e, 25) )
+            S1 = XORXOR(rotr(e, 6), rotr(e, 11), rotr(e, 25))
             ch = XOR(AND(e, f), AND(NOT(e), g))
             temp1 = add(add(add(add(h, S1), ch), k[j]), w[j])
             S0 = XORXOR(rotr(a, 2), rotr(a, 13), rotr(a, 22))
@@ -60,7 +62,10 @@ def sha256(message):
     return digest
 
 
+# The start point
 if __name__ == '__main__':
+    # Gets the user input
     input_message = input('Type a text: ')
-    print('Text:', input_message)
+    # Calls the main function of the algorithm
+    # Prints the final hash output
     print('Hash:', sha256(input_message))

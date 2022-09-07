@@ -1,3 +1,51 @@
+# <Python built-in functions rewrited (overwrited)>
+
+# It receives an integer input and returns a binary string
+def bin(input):
+    # If the input is == 0, it returns a hardcoded string
+    if input == 0:
+        return '0b0'
+    # It creates an empty binary string
+    binaryString = ''
+    # It does a while loop that while that contains the convertion logic, to create a binary number
+    # But the logic creates the final binary output inverted
+    while(input > 0):
+        digit = input % 2
+        binaryString += str(digit)
+        input = input // 2
+    # It creates an empty binary string, that will contain the function binary output
+    invertedBinaryString = ''
+    # It does the logic to invert the binary string
+    counter = len(binaryString) - 1
+    while counter >= 0:
+        invertedBinaryString += binaryString[counter]
+        counter -= 1
+    # It concatenates the 0b binary indicator to the beggining of the binary string output
+    return '0b' + invertedBinaryString
+
+
+# Implementing the entire ASCII table? D:
+# def ord(input):
+#     pass
+
+
+# It fills a with 0's until it has the same length as the input
+def zfill(strInput, intInput):
+    # It will let to be True only when triggering the break
+    while True:
+        # If the strInput length is less than the intInput
+        if len(strInput) < intInput:
+            # Concatenates a 0 in the beggining of the string
+            strInput = '0' + strInput
+        # Otherwise
+        else:
+            # Breaks the loop
+            break
+    # Returns the function output
+    return strInput
+
+# </Python built-in functions rewrited (overwrited)>
+
 # It returns the string input as an array of bits output (8 bits for every character in the input)
 def translate(message):
     # Translates the input to the ASCII equivalent
@@ -7,7 +55,7 @@ def translate(message):
     # Fills the beggining of the string with 0's until it has a length of 8 characters (8 bits)
     bytes = []
     for char in charcodes:
-        bytes.append(bin(char)[2:].zfill(8))
+        bytes.append(zfill(bin(char)[2:], 8))
     # Converts the string of bits in an array of bits
     bits = []
     for byte in bytes:
@@ -50,7 +98,7 @@ def preprocessMessage(message):
     # Fills the beggining of the string with 0's until it has a length of 64 characters (64 bits
     # Converts each bit of the string to an integer
     # Appends each of the converted bits to an array
-    message_len = [int(b) for b in bin(length)[2:].zfill(64)]
+    message_len = [int(b) for b in zfill(bin(length)[2:], 64)]
     # If the length of the bits of the translated input is less than 448
     if length < 448:
         # Appends a single 1 in the end of the array of bits of the translated input
