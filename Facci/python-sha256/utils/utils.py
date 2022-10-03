@@ -15,7 +15,7 @@ def if_(i, y, z): return y if isTrue(i) else z
 # Otherwise, the output will be False
 def and_(i, j): return if_(i, j, 0)
 # It does the same for lists
-def AND(i, j): return [and_(ia, ja) for ia, ja in zip(i, j)] 
+def AND(i, j): return [and_(ia, ja) for ia, ja in zip(i, j)]
 
 # NOT
 # It inverts (negates) the input
@@ -73,7 +73,7 @@ def shr(x, n):
     return y
 
 # Add
-# It takes to lists of bits and adds them
+# It takes two lists of bits and adds them
 def add(i, j):
     length = len(i)
     sums = list(range(length))
