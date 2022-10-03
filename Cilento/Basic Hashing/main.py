@@ -24,17 +24,17 @@ for chunk in chunks:
             aux_bitstream.append(0)
         smaller_chunks.append(aux_bitstream)
 
-# Starting from smaller_chunks[16], which is the first zero-only list, we will iterate over the message
-for i in range(16, 64):
-    # For every small_chunk between indexes 1 and 49 we will double XOR the results of rotating it right by 7, 18 and 3 spaces
-    aux_0 = XORXOR(rotateRight(smaller_chunks[i-15], 7), rotateRight(smaller_chunks[i-15], 18), rotateRight(smaller_chunks[i-15], 3))
-    # Here we do something similiar but using small_chunks between 14 and 62, and also changing the rotating amount to 17, 19 and 10
-    aux_1 = XORXOR(rotateRight(smaller_chunks[i-2], 17), rotateRight(smaller_chunks[i-2], 19), rotateRight(smaller_chunks[i-2], 10))
-    # Now small_chunk[i] becames the sum of small_chunk[i-16], aux_0, small_chunk[i-17] and aux1
-    smaller_chunks[i] = add(add(add(smaller_chunks[i-16], smaller_chunks[i-7]), aux_0), aux_1)
-    # The goal here is to shuffle the bits in a deterministic way
-    # Right now we have our message still intact in binary form within the first 16 segments of our list
-    # And as of right now, a shuffled seeded mess from there onward
+    # Starting from smaller_chunks[16], which is the first zero-only list, we will iterate over the message
+    for i in range(16, 64):
+        # For every small_chunk between indexes 1 and 49 we will double XOR the results of rotating it right by 7, 18 and 3 spaces
+        aux_0 = XORXOR(rotateRight(smaller_chunks[i-15], 7), rotateRight(smaller_chunks[i-15], 18), shiftRight(smaller_chunks[i-15], 3))
+        # Here we do something similiar but using small_chunks between 14 and 62, and also changing the rotating amount to 17, 19 and 10
+        aux_1 = XORXOR(rotateRight(smaller_chunks[i-2], 17), rotateRight(smaller_chunks[i-2], 19), shiftRight(smaller_chunks[i-2], 10))
+        # Now small_chunk[i] becames the sum of small_chunk[i-16], aux_0, small_chunk[i-17] and aux1
+        smaller_chunks[i] = add(add(add(smaller_chunks[i-16], aux_0), smaller_chunks[i-7]), aux_1)
+        # The goal here is to shuffle the bits in a deterministic way
+        # Right now we have our message still intact in binary form within the first 16 segments of our list
+        # And as of right now, a shuffled seeded mess from there onward
     # Now we need to initialize our intermediary variables with the initial hash values h0 ~ h7
     intermediary_1 = initial_hash_values[0]
     intermediary_2 = initial_hash_values[1]
@@ -87,3 +87,7 @@ for val in initial_hash_values:
     digest += str(hex(int(val, 2))).split('x')[1] + ' '
 
 print(digest)
+a = rotateRight([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0], 17)
+b = rotateRight([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0], 19)
+c = shiftRight([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0], 10)
+print(XORXOR(a, b , c))

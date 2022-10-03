@@ -81,7 +81,6 @@ def rotateRight(bitstream, amount_of_rotation):
 
 # Shifts the bitstream to the right (LSR) and fills empty spots with zeros
 def shiftRight(bitstream, amount_of_shifting):
-    last_digit_index = len(bitstream) - 1
     newBitstream = bitstream.copy() # <====== WILL PROBABLY NEED A BETTER WAY IN C
     for i in range(0, amount_of_shifting):
         newBitstream.insert(0, 0)
