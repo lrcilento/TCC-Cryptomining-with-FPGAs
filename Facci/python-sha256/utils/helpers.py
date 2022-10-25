@@ -29,7 +29,7 @@ def bin(input):
 #     pass
 
 
-# It fills with 0's until it has the same length as the input
+# It fills the beggining of the string input with 0's until it has the same length as the integer input
 def zfill(strInput, intInput):
     # It will let to be True only when triggering the break
     while True:
