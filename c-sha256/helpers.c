@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 // It receives an integer input and returns a binary string
 char *bin(int input) {
@@ -35,4 +36,22 @@ char *bin(int input) {
     }
     // It returns the binary string
     return invertedBinaryString;
+}
+
+// It fills the beggining of the string input with 0's until it has the same length as the integer input
+char *zfill(char *strInput, int intInput) {
+    char *strOutput = malloc(intInput);
+    int zerosToAdd = intInput - strlen(strInput);
+    // It does the logic to add 0's to the beggining of the string
+    int counter = 0;
+    for (int i = 0; i < intInput; i++) {
+        if (i >= zerosToAdd) {
+            *(strOutput + i) = strInput[counter];
+            counter++;
+        } else {
+            *(strOutput + i) = *"0";
+        }
+    }
+    // Returns the function output
+    return strOutput;
 }
