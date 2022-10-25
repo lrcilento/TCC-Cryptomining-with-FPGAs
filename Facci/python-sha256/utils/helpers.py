@@ -7,7 +7,7 @@ def bin(input):
         return '0b0'
     # It creates an empty binary string
     binaryString = ''
-    # It does a while loop that while that contains the convertion logic, to create a binary number
+    # It does a while loop that contains the convertion logic, to create a binary number
     # But the logic creates the final binary output inverted
     while(input > 0):
         digit = input % 2
@@ -29,7 +29,7 @@ def bin(input):
 #     pass
 
 
-# It fills a with 0's until it has the same length as the input
+# It fills with 0's until it has the same length as the input
 def zfill(strInput, intInput):
     # It will let to be True only when triggering the break
     while True:
