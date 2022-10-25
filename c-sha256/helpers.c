@@ -34,6 +34,8 @@ char *bin(int input) {
         invertedBinaryString[i] = binaryString[secondCounter - 1];
         secondCounter--;
     }
+    // It deallocates the memory
+    free(binaryString);
     // It returns the binary string
     return invertedBinaryString;
 }
@@ -54,4 +56,41 @@ char *zfill(char *strInput, int intInput) {
     }
     // Returns the function output
     return strOutput;
+}
+
+// It returns the string input as an array of bits output (8 bits for every character in the input)
+int *translate(char *message) {
+    // It takes the Unicode code point of every character in the message and inserts in an array
+    char charCodes[strlen(message)];
+    for (int i = 0; i < strlen(message); i++) {
+        charCodes[i] = *(message + i);
+    }
+    // It converts every Unicode code point to binary and chops off the '0b' binary indicator
+    char *bytes[strlen(message)];
+    int counter = 0;
+    for (int i = 0; i < sizeof(charCodes); i++) {
+        char *tempCode = bin(*(charCodes + i));
+        char *code = malloc(strlen(tempCode));
+        
+        for (int j = 0; j < strlen(tempCode); j++) {
+            if (j >= 2) {
+                code[counter] = *(tempCode + j);
+                counter++;
+            }
+        }
+        counter = 0;
+
+        bytes[i] = zfill(code, 8);
+        free(code);
+    }
+    // It takes the binary strings and turns them into a list, every bit in a different index
+    int *bits = malloc(strlen(message) * 8);
+    for (int i = 0; i < sizeof(bytes) / 8; i++) {
+        for (int j = 0; j < strlen(bytes[i]); j++) {
+            bits[counter] = bytes[i][j];
+            counter++;
+        }
+    }
+    // It returns a single list containing all the bits of the input characters
+    return bits;
 }
