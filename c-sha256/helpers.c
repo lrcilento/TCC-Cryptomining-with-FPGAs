@@ -94,3 +94,71 @@ int *translate(char *message) {
     // It returns a single list containing all the bits of the input characters
     return bits;
 }
+
+// It receives as an input an array of bits and a chunk lenght
+// It breaks the array of bits in chunks of bits and returns a pinter to an array containing these arrays of chunks of bits
+int *chunker(int *bits, int chunk_lenght) {
+    // It counts how much memory will be necessary to allocate
+    int sizeToAllocate = 0;
+    int sizeToAllocateAux = 0;    
+    if ((*(&bits + 1) - bits) > chunk_lenght) {
+        for (int i = 0; i < *(&bits + 1) - bits; i++) {
+            sizeToAllocateAux++;
+            if (sizeToAllocateAux == chunk_lenght) {
+                sizeToAllocate++;
+                sizeToAllocateAux = 0;
+            }
+        }
+        if (sizeToAllocateAux > 0) {
+            sizeToAllocate++;
+        }
+    } else {
+        sizeToAllocate = 1;
+    }
+    int *chunked[sizeToAllocate];
+    // It allocates the memory
+    int chunkedSize = sizeToAllocate;
+    for (int i = 0; i < chunkedSize; i++) {
+        if ((i == chunkedSize - 1) && (sizeToAllocateAux > 0)) {
+            chunked[i] = malloc(sizeToAllocateAux);
+        } else if ((*(&bits + 1) - bits) < chunk_lenght) {
+            chunked[i] = malloc(*(&bits + 1) - bits);
+        } else {
+            chunked[i] = malloc(chunk_lenght);
+        }
+    }
+    // It points every "row/array" of the chunked array to the input data it has to have
+    int counter = 0;
+    for (int i = 0; i < chunkedSize; i++) {
+        chunked[i] = &bits[counter];
+        counter += chunk_lenght;
+    }
+    
+    // // DEBUG
+    // // It prints the data of every "row/array" of the chunked array
+    // int k = 0;
+    // for (int i = 0; i < chunkedSize; i++) {
+  
+    //     int *p = chunked[i];
+    //     if (i == chunkedSize - 1 && sizeToAllocateAux > 0) {
+    //         for (int j = 0; j < sizeToAllocateAux; j++) {
+    //             printf("%d ", *p);
+    //             // Move the pointer to the next element
+    //             p++;
+    //         }
+    //     } else {
+    //         for (int j = 0; j < chunk_lenght; j++) {
+    //             printf("%d ", *p);
+    //             // Move the pointer to the next element
+    //             p++;
+    //         }
+    //     }
+    //     printf("\n");
+    //     k++;
+    //     // Move the pointer to the next row
+    //     chunked[i]++;
+    // }
+
+    // It returns a pointer to the array of "rows/arrays"
+    return *chunked;
+}
