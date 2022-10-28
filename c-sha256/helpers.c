@@ -162,3 +162,34 @@ int *chunker(int *bits, int chunk_lenght) {
     // It returns a pointer to the array of "rows/arrays"
     return *chunked;
 }
+
+// It fills the array with 0's if its length is smaller than the input lenght until it's equal to the input lenght
+int *fillZeros(int *bits, int bitsLenght, int desiredLenght, char *endian) {
+    // int l = *(&bits + 1) - bits;
+    int zerosToAdd = desiredLenght - bitsLenght;
+    // printf("%lu\n", *(&bits + 1) - bits);
+    int *bitsOutput = malloc(sizeof(int) * desiredLenght);
+    // If endian is equal to "LE" (little-endian) it will insert the zeros in the end of the array
+    if (strcmp(endian, "LE") == 0) {
+        for (int i = 0; i < desiredLenght; i++) {
+            if (i >= bitsLenght) {
+                *(bitsOutput + i) = 0;
+            } else {
+                *(bitsOutput + i) = *(bits + i);
+            }
+        }
+    // Otherwise "BE" (big-endian) it will insert the zeros in the beginning of the array
+    } else {
+        int counter = 0;
+        for (int i = 0; i < desiredLenght; i++) {
+            if (i < zerosToAdd) {
+                *(bitsOutput + i) = 0;
+            } else {
+                *(bitsOutput + i) = *(bits + counter);
+                counter++;
+            }
+        }
+    }
+
+    return bits;
+}
