@@ -95,11 +95,11 @@ def preprocessMessage(message):
     length = len(bits)
     # Translates the length of the array to binary
     # Chops off the 0b binary indicator (e.g. 0b11000 -> 11000)
-    # Fills the beggining of the string with 0's until it has a length of 64 characters (64 bits
+    # Fills the beggining of the string with 0's until it has a length of 64 characters (64 bits)
     # Converts each bit of the string to an integer
     # Appends each of the converted bits to an array
     message_len = [int(b) for b in zfill(bin(length)[2:], 64)]
-    # If the length of the bits of the translated input is less than 448
+    # If the length of bits of the translated input is less than 448
     if length < 448:
         # Appends a single 1 in the end of the array of bits of the translated input
         bits.append(1)
