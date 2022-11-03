@@ -128,7 +128,7 @@ def preprocessMessage(message):
         while len(bits) % 512 != 0:
             bits.append(0)
         # Takes all the 64 bits of the "message_len" array
-        # Puts those bits in the place of the last 64 bits of the "bits" array
+        # Puts those b  its in the place of the last 64 bits of the "bits" array
         bits[-64:] = message_len
     # Sends the result to the "chunker" function
     return chunker(bits, 512)
@@ -148,6 +148,9 @@ def initializer(values):
             word.append(int(b))
         # Fills every array of bits that's not multiple of 8 with 0's in the beginning, until it turns multiple of 8
         words.append(fillZeros(word, 32, 'BE'))
+    for i in words:
+        print(i)
+    print('-----------------')
     return words
 
 

@@ -3,7 +3,7 @@ from utils.utils import *
 from utils.constants import *
 
 # SHA-256 main function
-def sha256(message): 
+def sha256(message):
     # It initializes the values of "K" (array of hexadecimal constants) by converting them into arrays of bits
     k = initializer(K)
     # It initializes the values of "H_HEX" (array of hexadecimal constants) by converting them into arrays of bits
@@ -66,6 +66,6 @@ def sha256(message):
 if __name__ == '__main__':
     # Gets the user input
     input_message = input('Type a text: ')
-    # Calls the main function of the algorithm
+    # Calls the sha256 function
     # Prints the final hash output
     print('Hash:', sha256(input_message))
