@@ -4,7 +4,7 @@
 
 ### Installing CLang
 
-See this step by step https://clang.llvm.org/get_started.html
+See this step by step (preferably on Linux) https://clang.llvm.org/get_started.html 
 
 ### Compile
 ```clang main.c helpers.c utils.c```
