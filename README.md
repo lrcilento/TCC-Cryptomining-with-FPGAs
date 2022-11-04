@@ -2,7 +2,7 @@
 
 #### To run the code, please do the following steps:
 
-### Installing CLang
+### Installing Clang
 
 See this step by step (preferably on Linux) https://clang.llvm.org/get_started.html 
 
