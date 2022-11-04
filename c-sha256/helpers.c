@@ -1,7 +1,4 @@
 #include "helpers.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 // It receives an integer input and returns a binary string
 char *bin(int input) {
@@ -325,7 +322,7 @@ int *preprocessMessage(char *message) {
         return bitsMessageLenMerge;
     // Otherwise if the length of the bits of the translated input is equal to 448
     } else if (lenght == 448) {
-        // printf("%s\n", "epa");
+        printf("%s\n", "epa");
         // Appends a single 1 in the end of the array of bits of the translated input
         int *bitsIncreased = malloc((lenght + 1) * sizeof(int));
         // printf("%lu\n", (lenght + 1) * sizeof(int));
@@ -365,7 +362,7 @@ int *preprocessMessage(char *message) {
         return chunker(bits, 1024, 512);
     // Otherwise
     } else {
-        // printf("%s\n", "ipa");
+        printf("%s\n", "ipa");
         // Appends a single 1 in the end of the array of bits of the translated input
         int *bitsIncreased = malloc((lenght + 1) * sizeof(int));
         // printf("%d\n", lenght);

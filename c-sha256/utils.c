@@ -1,22 +1,6 @@
-#include <stdio.h>
-#include <stdbool.h>
+#include "utils.h"
 
 // False == 0 | True != False (0)
-
-typedef struct
-{
-    int number0;
-    int number1;
-}
-tuple;
-
-typedef struct
-{
-    int number0;
-    int number1;
-    int number2;
-}
-thraay;
 
 // It returns a list of tuples, joining the same index of the two input arrays together in a tuple
 // Each tuple contains two values of the input arrays, both from the same index from the two different arrays

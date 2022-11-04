@@ -1,8 +1,6 @@
 #include "constants.h"
 #include "helpers.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "utils.h"
 
 // SHA-256 main function
 char *sha256(char *message) {
@@ -39,7 +37,7 @@ char *sha256(char *message) {
             
             // printf("%c", chunks[i]);
         }
-        printf("\n--------------------------------------------------\n");
+        // printf("\n--------------------------------------------------\n");
         // int *w = chunker(chunks, 512, 32);
 
         // CHUNKER FUNCTION LOGIC
@@ -61,9 +59,9 @@ char *sha256(char *message) {
         // }
 
         // TODO
-        for (int i = 16; i < 64; i++) {
+        // for (int i = 16; i < 64; i++) {
             
-        }
+        // }
 
         
     } else if (messageLenght == 448) {
@@ -80,7 +78,7 @@ char *sha256(char *message) {
 
 int main(void) {
     // Gets the user input
-    char inputMessage[100000];
+    char inputMessage[55];
     printf("Type a text: ");
     scanf("%s", inputMessage);
     // Calls the sha256 function
