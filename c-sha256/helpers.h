@@ -4,4 +4,4 @@ int *translate(char *message);
 int *chunker(int *bits, int bitsLenght, int chunkLenght);
 int *fillZeros(int *bits, int bitsLenght, int desiredLenght, char *endian);
 int *preprocessMessage(char *message);
-int *initializer(char values[][11], int sizeOfValues);
+int *initializer(char *value);

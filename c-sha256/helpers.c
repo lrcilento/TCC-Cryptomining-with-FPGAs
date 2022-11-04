@@ -103,75 +103,95 @@ int *translate(char *message) {
     return bits;
 }
 
-// It receives as an input an array of bits and a chunk lenght
-// It breaks the array of bits in chunks of bits and returns a pointer to an array containing these arrays of chunks of bits
 int *chunker(int *bits, int bitsLenght, int chunkLenght) {
-    // It counts how much memory will be necessary to allocate
-    int sizeToAllocate = 0;
-    int sizeToAllocateAux = 0;
-    // printf("%d\n", bitsLenght);
-    // printf("%d\n", chunkLenght);
-    if (bitsLenght > chunkLenght) {
-        for (int i = 0; i < bitsLenght; i++) {
-            sizeToAllocateAux++;
-            if (sizeToAllocateAux == chunkLenght) {
-                sizeToAllocate++;
-                sizeToAllocateAux = 0;
-            }
-        }
-        if (sizeToAllocateAux > 0) {
-            sizeToAllocate++;
-        }
-    } else {
-        sizeToAllocate = 1;
-    }
-    int *chunked[sizeToAllocate];
-    // It allocates the memory
-    int chunkedSize = sizeToAllocate;
-    for (int i = 0; i < chunkedSize; i++) {
-        if ((i == chunkedSize - 1) && (sizeToAllocateAux > 0)) {
-            chunked[i] = malloc(sizeToAllocateAux * sizeof(int));
-        } else if (bitsLenght < chunkLenght) {
-            chunked[i] = malloc(bitsLenght * sizeof(int));
-        } else {
-            chunked[i] = malloc(chunkLenght * sizeof(int));
-        }
-    }
-    // It points every "row/array" of the chunked array to the input data it needs to have
+    int numRows = bitsLenght / chunkLenght;
+    int chunked[numRows][chunkLenght];
     int counter = 0;
-    for (int i = 0; i < chunkedSize; i++) {
-        chunked[i] = &bits[counter];
-        counter += chunkLenght;
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < chunkLenght; j++) {
+            chunked[i][j] = bits[counter];
+            counter++;
+        }
     }
-    
-    // // DEBUG
-    // // It prints the data of every "row/array" of the chunked array
-    // int k = 0;
-    // for (int i = 0; i < chunkedSize; i++) {
-  
-    //     int *p = chunked[i];
-    //     if (i == chunkedSize - 1 && sizeToAllocateAux > 0) {
-    //         for (int j = 0; j < sizeToAllocateAux; j++) {
-    //             printf("%c ", *p);
-    //             // Move the pointer to the next element
-    //             p++;
-    //         }
-    //     } else {
-    //         for (int j = 0; j < chunkLenght; j++) {
-    //             printf("%c ", *p);
-    //             // Move the pointer to the next element
-    //             p++;
-    //         }
-    //     }
-    //     printf("\n\n");
-    //     k++;
-    //     // Move the pointer to the next row
-    //     chunked[i]++;
-    // }
 
-    // It returns a pointer to the array of "rows/arrays"
-    return *chunked;
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < chunkLenght; j++) {
+            printf("%c", chunked[i][j]);
+        }
+    }
+
+    return chunked;
 }
+
+// // It receives as an input an array of bits, the size of this array of bits and a chunk lenght
+// // It breaks the array of bits in chunks of bits and returns a pointer to an array containing these arrays of chunks of bits
+// int *chunker(int *bits, int bitsLenght, int chunkLenght) {
+//     // It counts how much memory will be necessary to allocate
+//     int sizeToAllocate = 0;
+//     int sizeToAllocateAux = 0;
+//     // printf("%d\n", bitsLenght);
+//     // printf("%d\n", chunkLenght);
+//     if (bitsLenght > chunkLenght) {
+//         for (int i = 0; i < bitsLenght; i++) {
+//             sizeToAllocateAux++;
+//             if (sizeToAllocateAux == chunkLenght) {
+//                 sizeToAllocate++;
+//                 sizeToAllocateAux = 0;
+//             }
+//         }
+//         if (sizeToAllocateAux > 0) {
+//             sizeToAllocate++;
+//         }
+//     } else {
+//         sizeToAllocate = 1;
+//     }
+//     int *chunked[sizeToAllocate];
+//     // It allocates the memory
+//     int chunkedSize = sizeToAllocate;
+//     for (int i = 0; i < chunkedSize; i++) {
+//         if ((i == chunkedSize - 1) && (sizeToAllocateAux > 0)) {
+//             chunked[i] = malloc(sizeToAllocateAux * sizeof(int));
+//         } else if (bitsLenght < chunkLenght) {
+//             chunked[i] = malloc(bitsLenght * sizeof(int));
+//         } else {
+//             chunked[i] = malloc(chunkLenght * sizeof(int));
+//         }
+//     }
+//     // It points every "row/array" of the chunked array to the input data it needs to have
+//     int counter = 0;
+//     for (int i = 0; i < chunkedSize; i++) {
+//         chunked[i] = &bits[counter];
+//         counter += chunkLenght;
+//     }
+    
+//     // // DEBUG
+//     // // It prints the data of every "row/array" of the chunked array
+//     // int k = 0;
+//     // for (int i = 0; i < chunkedSize; i++) {
+  
+//     //     int *p = chunked[i];
+//     //     if (i == chunkedSize - 1 && sizeToAllocateAux > 0) {
+//     //         for (int j = 0; j < sizeToAllocateAux; j++) {
+//     //             printf("%c ", *p);
+//     //             // Move the pointer to the next element
+//     //             p++;
+//     //         }
+//     //     } else {
+//     //         for (int j = 0; j < chunkLenght; j++) {
+//     //             printf("%c ", *p);
+//     //             // Move the pointer to the next element
+//     //             p++;
+//     //         }
+//     //     }
+//     //     printf("\n\n");
+//     //     k++;
+//     //     // Move the pointer to the next row
+//     //     chunked[i]++;
+//     // }
+
+//     // It returns a pointer to the array of "rows/arrays"
+//     return *chunked;
+// }
 
 // It fills the array with 0's if its length is smaller than the input lenght until it's equal to the input lenght
 // The zeros (48) and ones (49) are in ASCII
@@ -396,325 +416,582 @@ int *preprocessMessage(char *message) {
     }
 }
 
-// It initializes the values (array of hexadecimal constants) by converting them into arrays of bits
-int *initializer(char values[][11], int sizeOfValues) {
+int *initializer(char *value) {
     int aux[5] = {1, 1, 1, 1, 1};
 
-    // Converts the values from hexadecimal to binary and chops off the 0b binary indicator
-    // printf("%c", values[][0]);
-    char choppedCharValues[sizeOfValues][9];
-    // unsigned long int choppedULIValues[sizeOfValues][31];
-    for (int i = 0; i < sizeOfValues; i++) {
-        // printf("%s\n", values[i] + 2);
-        strcpy(choppedCharValues[i], values[i] + 2);
-    }
+    char choppedCharValue[9];
+    strcpy(choppedCharValue, value + 2);
 
     int alert = 0;
-    char charBinValues[sizeOfValues][33];
-    for (int i = 0; i < sizeOfValues; i++) {
-        for (int j = 0; j < 8; j++) {
-            // printf("%c", *(*(choppedCharValues + i) + j));
-            // printf("%s", charBinValues[1]);
-            switch (*(*(choppedCharValues + i) + j)) {
-                case '0':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                        alert = 1;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0000");
-                    // printf("0000");
+    char charBinValue[33];
+    for (int i = 0; i < 8; i++) {
+        switch (*(choppedCharValue + i)) {
+            case '0':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                    alert = 1;
                     break;
-                case '1':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "1");
-                        // printf("1");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0001");
-                    // printf("0001");
+                }
+                strcat(charBinValue, "0000");
+                // printf("0000");
+                break;
+            case '1':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "1");
+                    // printf("1");
+                    alert = 0;
                     break;
-                case '2':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "10");
-                        // printf("10");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0010");
-                    // printf("0010");
+                }
+                strcat(charBinValue, "0001");
+                // printf("0001");
+                break;
+            case '2':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "10");
+                    // printf("10");
+                    alert = 0;
                     break;
-                case '3':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "11");
-                        // printf("11");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0011");
-                    // printf("0011");
+                }
+                strcat(charBinValue, "0010");
+                // printf("0010");
+                break;
+            case '3':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "11");
+                    // printf("11");
+                    alert = 0;
                     break;
-                case '4':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "100");
-                        // printf("100");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0100");
-                    // printf("0100");
+                }
+                strcat(charBinValue, "0011");
+                // printf("0011");
+                break;
+            case '4':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "100");
+                    // printf("100");
+                    alert = 0;
                     break;
-                case '5':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "101");
-                        // printf("101");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0101");
-                    // printf("0101");
+                }
+                strcat(charBinValue, "0100");
+                // printf("0100");
+                break;
+            case '5':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "101");
+                    // printf("101");
+                    alert = 0;
                     break;
-                case '6':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "110");
-                        // printf("110");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0110");
-                    // printf("0110");
+                }
+                strcat(charBinValue, "0101");
+                // printf("0101");
+                break;
+            case '6':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "110");
+                    // printf("110");
+                    alert = 0;
                     break;
-                case '7':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (j == 0 || alert == 1) {
-                        strcat(charBinValues[i], "111");
-                        // printf("111");
-                        alert = 0;
-                        break;
-                    }
-                    strcat(charBinValues[i], "0111");
-                    // printf("0111");
+                }
+                strcat(charBinValue, "0110");
+                // printf("0110");
+                break;
+            case '7':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (i == 0 || alert == 1) {
+                    strcat(charBinValue, "111");
+                    // printf("111");
+                    alert = 0;
                     break;
-                case '8':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1000");
-                    // printf("1000");
-                    break;
-                case '9':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1001");
-                    // printf("1001");
-                    break;
-                case 'A':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1010");
-                    // printf("1010");
-                    break;
-                case 'B':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1011");
-                    // printf("1011");
-                    break;
-                case 'C':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1100");
-                    // printf("1100");
-                    break;
-                case 'D':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1101");
-                    // printf("1101");
-                    break;
-                case 'E':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1110");
-                    // printf("1110");
-                    break;
-                case 'F':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1111");
-                    // printf("1111");
-                    break;
-                case 'a':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1010");
-                    // printf("1010");
-                    break;
-                case 'b':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1011");
-                    // printf("1011");
-                    break;
-                case 'c':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1100");
-                    // printf("1100");
-                    break;
-                case 'd':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1101");
-                    // printf("1101");
-                    break;
-                case 'e':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1110");
-                    // printf("1110");
-                    break;
-                case 'f':
-                    if (j == 0) {
-                        strcpy(charBinValues[i], "");
-                    }
-                    if (alert == 1) {
-                        alert = 0;
-                    }
-                    strcat(charBinValues[i], "1111");
-                    // printf("1111");
-                    break;
-            }
-            // printf("Counter: %d\n", counter);
-            // printf("I: %d\n", counter);
-            // printf("J: %d\n", counter);
-            // printf("\n");
+                }
+                strcat(charBinValue, "0111");
+                // printf("0111");
+                break;
+            case '8':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1000");
+                // printf("1000");
+                break;
+            case '9':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1001");
+                // printf("1001");
+                break;
+            case 'A':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1010");
+                // printf("1010");
+                break;
+            case 'B':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1011");
+                // printf("1011");
+                break;
+            case 'C':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1100");
+                // printf("1100");
+                break;
+            case 'D':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1101");
+                // printf("1101");
+                break;
+            case 'E':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1110");
+                // printf("1110");
+                break;
+            case 'F':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1111");
+                // printf("1111");
+                break;
+            case 'a':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1010");
+                // printf("1010");
+                break;
+            case 'b':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1011");
+                // printf("1011");
+                break;
+            case 'c':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1100");
+                // printf("1100");
+                break;
+            case 'd':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1101");
+                // printf("1101");
+                break;
+            case 'e':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1110");
+                // printf("1110");
+                break;
+            case 'f':
+                if (i == 0) {
+                    strcpy(charBinValue, "");
+                }
+                if (alert == 1) {
+                    alert = 0;
+                }
+                strcat(charBinValue, "1111");
+                // printf("1111");
+                break;
         }
     }
+    
+    int *word = malloc(strlen(charBinValue) * sizeof(int));
 
-    // printf("%s\n", charBinValues[0]);
-    // printf("%c\n", charBinValues[0][1]);
-    // printf("%c\n", *(&charBinValues[0][0]));
-    // printf("%d\n", strcmp(*(&charBinValues[0][0]), "0"));
-    // printf("%lu\n", strlen(charBinValues[0]));
-
-    int *words = malloc(sizeOfValues);
-    int *p;
-    for (int i = 0; i < sizeOfValues; i++) {
-        // words[i] = malloc(strlen(charBinValues[i]) * sizeof(int));
-        // int sizeToAllocate = 32 * sizeof(int);
-        int *word = malloc(32 * sizeof(int));
-        // printf("%lu\n", strlen(charBinValues[i]) * sizeof(int));
-        for (int j = 0; j < strlen(charBinValues[i]); j++) {
-            word[j] = charBinValues[i][j];
-            // printf(" Teste: %d", charBinValues[i][j]);
-            // printf("%s\n", &charBinValues[i][j]);
-            // printf("%c\n", strcmp(charBinValues[i][j], "0"));
-        }
-        // printf("\n--------------------\n");
-
-        // printf("%c\n", word[30]);
-        // printf("%lu\n", strlen(charBinValues[]));
-
-        // for (int x = 0; x < strlen(charBinValues[i]); x++) {
-        //     printf("%c", word[x]);
-        // }
-
-        // int *teste = fillZeros(word, strlen(charBinValues[i]), 32, "BE");
-        // for (int l = 0; l < 32; l++) {
-        //     printf("%c", *(teste + l));
-        // }
-        p = fillZeros(word, strlen(charBinValues[i]), 32, "BE");
-        words[i] = **(&p);
-        // for (int l = 0; l < 32; l++) {
-        //     printf("%c", *(p + l));
-        // }
-        
-        // for (int x = 0; x < strlen(charBinValues[i]); x++) {
-        //     printf("%c", words[x]);
-        //     // fillZeros(&word[x], 32 * sizeof(int), 32, "BE");
-        // }
-        // printf("\n----------------------------------\n");
-        // printf("%s\n", charBinValues[i]);
+    for (int i = 0; i < strlen(charBinValue); i++) {
+        word[i] = *(charBinValue + i);
     }
 
-    // printf("%c", *(words + 10));
-
-    // for (int i = 0; i < sizeOfValues; i++) {
-    //     printf("%c", *(*(words + i)));
+    int *wordFilled = fillZeros(word, strlen(charBinValue), 32, "BE");
+    
+    // for (int i = 0; i < strlen(charBinValue); i++) {
+    //     printf("%c", word[i]);
     // }
 
-    return words;
+    // for (int i = 0; i < 32; i++) {
+    //     printf("%c", wordFilled[i]);
+    // }
+
+    return wordFilled;
 }
+
+// // It initializes the values (array of hexadecimal constants) by converting them into arrays of bits
+// int *initializer(char values[][11], int sizeOfValues) {
+//     // Converts the values from hexadecimal to binary and chops off the 0b binary indicator
+//     // printf("%c", values[][0]);
+//     char choppedCharValues[sizeOfValues][9];
+//     for (int i = 0; i < sizeOfValues; i++) {
+//         // printf("%s\n", values[i] + 2);
+//         strcpy(choppedCharValues[i], values[i] + 2);
+//     }
+
+//     int alert = 0;
+//     char charBinValues[sizeOfValues][33];
+//     for (int i = 0; i < sizeOfValues; i++) {
+//         for (int j = 0; j < 8; j++) {
+//             // printf("%c", *(*(choppedCharValues + i) + j));
+//             // printf("%s", charBinValues[1]);
+//             switch (*(*(choppedCharValues + i) + j)) {
+//                 case '0':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                         alert = 1;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0000");
+//                     // printf("0000");
+//                     break;
+//                 case '1':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "1");
+//                         // printf("1");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0001");
+//                     // printf("0001");
+//                     break;
+//                 case '2':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "10");
+//                         // printf("10");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0010");
+//                     // printf("0010");
+//                     break;
+//                 case '3':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "11");
+//                         // printf("11");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0011");
+//                     // printf("0011");
+//                     break;
+//                 case '4':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "100");
+//                         // printf("100");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0100");
+//                     // printf("0100");
+//                     break;
+//                 case '5':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "101");
+//                         // printf("101");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0101");
+//                     // printf("0101");
+//                     break;
+//                 case '6':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "110");
+//                         // printf("110");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0110");
+//                     // printf("0110");
+//                     break;
+//                 case '7':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (j == 0 || alert == 1) {
+//                         strcat(charBinValues[i], "111");
+//                         // printf("111");
+//                         alert = 0;
+//                         break;
+//                     }
+//                     strcat(charBinValues[i], "0111");
+//                     // printf("0111");
+//                     break;
+//                 case '8':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1000");
+//                     // printf("1000");
+//                     break;
+//                 case '9':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1001");
+//                     // printf("1001");
+//                     break;
+//                 case 'A':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1010");
+//                     // printf("1010");
+//                     break;
+//                 case 'B':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1011");
+//                     // printf("1011");
+//                     break;
+//                 case 'C':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1100");
+//                     // printf("1100");
+//                     break;
+//                 case 'D':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1101");
+//                     // printf("1101");
+//                     break;
+//                 case 'E':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1110");
+//                     // printf("1110");
+//                     break;
+//                 case 'F':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1111");
+//                     // printf("1111");
+//                     break;
+//                 case 'a':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1010");
+//                     // printf("1010");
+//                     break;
+//                 case 'b':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1011");
+//                     // printf("1011");
+//                     break;
+//                 case 'c':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1100");
+//                     // printf("1100");
+//                     break;
+//                 case 'd':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1101");
+//                     // printf("1101");
+//                     break;
+//                 case 'e':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1110");
+//                     // printf("1110");
+//                     break;
+//                 case 'f':
+//                     if (j == 0) {
+//                         strcpy(charBinValues[i], "");
+//                     }
+//                     if (alert == 1) {
+//                         alert = 0;
+//                     }
+//                     strcat(charBinValues[i], "1111");
+//                     // printf("1111");
+//                     break;
+//             }
+//             // printf("Counter: %d\n", counter);
+//             // printf("I: %d\n", counter);
+//             // printf("J: %d\n", counter);
+//             // printf("\n");
+//         }
+//     }
+
+//     // printf("%s\n", charBinValues[0]);
+//     // printf("%c\n", charBinValues[0][1]);
+//     // printf("%c\n", *(&charBinValues[0][0]));
+//     // printf("%d\n", strcmp(*(&charBinValues[0][0]), "0"));
+//     // printf("%lu\n", strlen(charBinValues[0]));
+
+//     int *words = malloc(sizeOfValues * sizeof(int));
+//     int *p;
+//     for (int i = 0; i < sizeOfValues; i++) {
+//         int *word = malloc(32 * sizeof(int)), k = 0;
+//         for (int j = 0; j < strlen(charBinValues[i]); j++) {
+//             word[j] = charBinValues[i][j];
+
+//         }
+
+//         p = fillZeros(word, strlen(charBinValues[i]), 32, "BE");
+//         for (int j = 0; j < 31; j++) {
+//             k = 10 * k + **p[j];
+//             printf("%c", k);
+//         }
+//         words[i] = k;
+
+//         // printf("%d", k);
+//         // for (int l = 0; l < 32; l++) {
+//         //     printf("%c", *(p + l));
+//         // }
+//     }
+
+//     // printf("%c", *(words + 10));
+
+//     // for (int i = 0; i < sizeOfValues; i++) {
+//     //     printf("%c", *(*(words + i)));
+//     // }
+
+//     return words;
+// }
+
+// char *b2Tob16(int *value) {
+//     for (int i = 0; i < 32; i++) {
+
+//     }
+// }
