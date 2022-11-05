@@ -2,11 +2,15 @@
 
 # Is True
 # Returns True if input "x" is equal to 1
-def isTrue(x): return x == 1
+def isTrue(x):
+    # print(x)
+    return x == 1
 
 # Simple If
 # If "i" is equal to 1 (True) it returns "y", else (False) it returns "z"
-def if_(i, y, z): return y if isTrue(i) else z
+def if_(i, y, z): 
+    print(i, y, z)
+    return y if isTrue(i) else z
 
 # <LOGIC GATES>
 
@@ -19,20 +23,26 @@ def AND(i, j): return [and_(ia, ja) for ia, ja in zip(i, j)]
 
 # NOT
 # It inverts (negates) the input
-def not_(i): return if_(i, 0, 1)
+def not_(i):
+    # print(i)
+    return if_(i, 0, 1)
 # It does the same for lists
 def NOT(i): return [not_(x) for x in i]
 
 # XOR (Exclusive OR)
 # If there's only one input == True, the output will be True
 # Otherwise, if there's no input == True, or if there's more than one input == True, the output will be False
-def xor(i, j): return if_(i, not_(j), j)
+def xor_(i, j):
+    # print(i, j)
+    return if_(i, not_(j), j)
 # It does the same for lists
-def XOR(i, j): return [xor(ia, ja) for ia, ja in zip(i, j)]
+def XOR(i, j): return [xor_(ia, ja) for ia, ja in zip(i, j)]
 
 # XORXOR
 # The output will be True if the number of values == True is odd
-def xorxor(i, j, l): return xor(i, xor(j, l))
+def xorxor(i, j, l):
+    # print(i, j, l)
+    return xor_(i, xor_(j, l))
 # It does the same for lists
 def XORXOR(i, j, l): return [xorxor(ia, ja, la) for ia, ja, la, in zip(i, j, l)]
 
@@ -63,7 +73,7 @@ def rotr(x, n):
     return y
 
 # Shift Right
-# It takes a number of bits to shift right filling with 0's, and don't let to pass than 8 bits lenght
+# It takes a number of bits to shift right filling with 0's
 def shr(x, n):
     y = []
     for i in range(n):

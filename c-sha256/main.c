@@ -26,52 +26,55 @@ char *sha256(char *message) {
     int messageLenght = strlen(message) * 8;
     int *chunks = preprocessMessage(message);
 
-    if (messageLenght < 448) {
-        int resizedChunks[(512 + (48 * 32)) * sizeof(int)];
-        for (int i = 0; i < (512 + (48 * 32)); i++) {
-            if (i < 512) {
-                resizedChunks[i] = chunks[i];
-            } else {
-                resizedChunks[i] = 48;
-            }
-            
-            // printf("%c", chunks[i]);
+    int resizedChunks[(512 + (48 * 32)) * sizeof(int)];
+    for (int i = 0; i < (512 + (48 * 32)); i++) {
+        if (i < 512) {
+            resizedChunks[i] = chunks[i];
+        } else {
+            resizedChunks[i] = 48;
         }
-        // printf("\n--------------------------------------------------\n");
-        // int *w = chunker(chunks, 512, 32);
+        
+        // printf("%c", chunks[i]);
+    }
+    // printf("\n--------------------------------------------------\n");
+    // int *w = chunker(chunks, 512, 32);
 
-        // CHUNKER FUNCTION LOGIC
-        int numRows = (512 + (48 * 32)) / 32;
-        int chunked[numRows][32];
-        int counter = 0;
-        for (int i = 0; i < numRows; i++) {
-            for (int j = 0; j < 32; j++) {
-                chunked[i][j] = resizedChunks[counter];
-                counter++;
-            }
+    // CHUNKER FUNCTION LOGIC
+    int numRows = (512 + (48 * 32)) / 32;
+    int chunked[numRows][32];
+    int counter = 0;
+    for (int i = 0; i < numRows; i++) {
+        for (int j = 0; j < 32; j++) {
+            chunked[i][j] = resizedChunks[counter];
+            counter++;
         }
-
-        // for (int i = 0; i < numRows; i++) {
-        //     for (int j = 0; j < 32; j++) {
-        //         printf("%c", chunked[i][j]);
-        //     }
-        //     printf("\n---------------------------\n");
-        // }
-
-        // TODO
-        // for (int i = 16; i < 64; i++) {
-            
-        // }
-
-        
-    } else if (messageLenght == 448) {
-        
-    } else {
-
     }
 
-    for (int i = 0; i < 512; i++) {
+    // for (int i = 0; i < numRows; i++) {
+    //     for (int j = 0; j < 32; j++) {
+    //         printf("%c", chunked[i][j]);
+    //     }
+    //     printf("\n---------------------------\n");
+    // }
+
+    // TODO
+
+    // int *teste = malloc(32 * sizeof(int));
+    // for (int j = 0; j < 32; j++) {
+    //     teste[] = chunked[16 - 15][j]);
+    //     // printf("%c", chunked[16 - 15][j]);
+    // }
+
+
+    // printf("%lu", sizeof(chunked[1]));
+    int *test = XORXOR(rotr(chunked[1], 32, 7), rotr(chunked[1], 32, 18), shr(chunked[1], 32, 3));
+    for (int s = 0; s < 32; s++) {
+        printf("%c", test[s]);
     }
+
+    // for (int i = 16; i < 64; i++) {
+    //     XORXOR(rotr(chunked[i - 15], 32, 7), rotr(chunked[i - 15], 32, 18), shr(chunked[i - 15], 32, 3));
+    // }
 
     return "output";
 }

@@ -67,6 +67,7 @@ def translate(message):
 # It splits the input array of bits in arrays of 8 bits, and returns them inside a list of arrays
 def chunker(bits, chunk_length = 8):
     chunked = []
+    print(len(bits))
     for b in range(0, len(bits), chunk_length):
         chunked.append(bits[b:b + chunk_length])
     return chunked

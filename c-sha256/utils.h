@@ -1,5 +1,6 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <stdlib.h>
 
 typedef struct
 {
@@ -24,11 +25,11 @@ int and_(int i, int j);
 int *AND(int x[], int y[]);
 int not_(int i);
 int *NOT(int x[]);
-int xor(int i, int j);
+int xor_(int i, int j);
 int *XOR(int x[], int y[]);
 int xorxor(int i, int j, int l);
 int *XORXOR(int x[], int y[], int z[]);
 int maj(int i, int j, int k);
-int *rotr(int x[], int n);
-int *shr(int x[], int n);
-int *add(int x[], int y[]);
+int *rotr(int x[], int size, int n);
+int *shr(int x[], int size, int n);
+int *add(int x[], int y[], int size);
