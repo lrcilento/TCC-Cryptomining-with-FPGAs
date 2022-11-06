@@ -24,11 +24,6 @@ def bin(input):
     return '0b' + invertedBinaryString
 
 
-# Implementing the entire ASCII table? D:
-# def ord(input):
-#     pass
-
-
 # It fills the beggining of the string input with 0's until it has the same length as the integer input
 def zfill(strInput, intInput):
     # It will let to be True only when triggering the break
@@ -67,7 +62,6 @@ def translate(message):
 # It splits the input array of bits in arrays of 8 bits, and returns them inside a list of arrays
 def chunker(bits, chunk_length = 8):
     chunked = []
-    print(len(bits))
     for b in range(0, len(bits), chunk_length):
         chunked.append(bits[b:b + chunk_length])
     return chunked
@@ -154,6 +148,7 @@ def initializer(values):
 
 # It returns the Base 2 array input as a string Base 16 output
 def b2Tob16(value):
+    print(value)
     # Converts an array of bits in a string of bits
     value = ''.join([str(x) for x in value])
     # Splits the string of bits in chuncks of 4 bits

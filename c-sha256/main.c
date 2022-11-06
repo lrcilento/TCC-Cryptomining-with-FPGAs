@@ -3,7 +3,7 @@
 #include "utils.h"
 
 // SHA-256 main function
-char *sha256(char *message) {
+int *sha256(char *message) {
     // It initializes the values of "K" (array of hexadecimal constants) by converting them into arrays of bits
     int k[64][32];
     for (int i = 0; i < 64; i++) {
@@ -11,34 +11,25 @@ char *sha256(char *message) {
             k[i][j] = *(initializer(K[i]) + j);
         }
     }
-
-    // printf("%c", k[1][2]);
-
+    // It initializes the values of "H_HEX" (array of hexadecimal constants) by converting them into arrays of bits
     int h[8][32];
-    for (int i = 0; i < 64; i++) {
+    for (int i = 0; i < 8; i++) {
         for (int j = 0; j < 32; j++) {
             h[i][j] = *(initializer(H_HEX[i]) + j);
         }
     }
-
-    // printf("%c", h[1][3]);
-
-    int messageLenght = strlen(message) * 8;
+    // Returns an array of 512 bits
     int *chunks = preprocessMessage(message);
-
-    int resizedChunks[(512 + (48 * 32)) * sizeof(int)];
+    // Resizes the array
+    int resizedChunks[(512 + (48 * 32))];
     for (int i = 0; i < (512 + (48 * 32)); i++) {
         if (i < 512) {
             resizedChunks[i] = chunks[i];
         } else {
             resizedChunks[i] = 48;
         }
-        
-        // printf("%c", chunks[i]);
     }
-    // printf("\n--------------------------------------------------\n");
-    // int *w = chunker(chunks, 512, 32);
-
+    // MOVE THIS TO THE KERNEL
     // CHUNKER FUNCTION LOGIC
     int numRows = (512 + (48 * 32)) / 32;
     int chunked[numRows][32];
@@ -49,34 +40,81 @@ char *sha256(char *message) {
             counter++;
         }
     }
-
-    // for (int i = 0; i < numRows; i++) {
-    //     for (int j = 0; j < 32; j++) {
-    //         printf("%c", chunked[i][j]);
-    //     }
-    //     printf("\n---------------------------\n");
-    // }
-
-    // TODO
-
-    // int *teste = malloc(32 * sizeof(int));
-    // for (int j = 0; j < 32; j++) {
-    //     teste[] = chunked[16 - 15][j]);
-    //     // printf("%c", chunked[16 - 15][j]);
-    // }
-
-
-    // printf("%lu", sizeof(chunked[1]));
-    int *test = XORXOR(rotr(chunked[1], 32, 7), rotr(chunked[1], 32, 18), shr(chunked[1], 32, 3));
-    for (int s = 0; s < 32; s++) {
-        printf("%c", test[s]);
+    // Logic to mix everything to turn the input in a hash
+    for (int i = 16; i < 64; i++) {
+        int *s0 = XORXOR(rotr(chunked[i - 15], 32, 7), rotr(chunked[i - 15], 32, 18), shr(chunked[i - 15], 32, 3));
+        int *s1 = XORXOR(rotr(chunked[i - 2], 32, 17), rotr(chunked[i - 2], 32, 19), shr(chunked[i - 2], 32, 10));
+        int *helper = add(add(add(chunked[i - 16], s0, 32), chunked[i - 7], 32), s1, 32);
+        for (int j = 0; j < 32; j++) {
+            chunked[i][j] = helper[j];
+        }
     }
-
-    // for (int i = 16; i < 64; i++) {
-    //     XORXOR(rotr(chunked[i - 15], 32, 7), rotr(chunked[i - 15], 32, 18), shr(chunked[i - 15], 32, 3));
-    // }
-
-    return "output";
+    int *a = h[0];
+    int *b = h[1];
+    int *c = h[2];
+    int *d = h[3];
+    int *e = h[4];
+    int *f = h[5];
+    int *g = h[6];
+    int *i = h[7];
+    // More mixing
+    for (int j = 0; j < 64; j++) {
+        int *S1 = XORXOR(rotr(e, 32, 6), rotr(e, 32, 11), rotr(e, 32, 25));
+        int *ch = XOR(AND(e, f), AND(NOT(e), g));
+        int *temp1 = add(add(add(add(i, S1, 32), ch, 32), k[j], 32), chunked[j], 32);
+        int *S0 = XORXOR(rotr(a, 32, 2), rotr(a, 32, 13), rotr(a, 32, 22));
+        int *m = XORXOR(AND(a, b), AND(a, c), AND(b, c));
+        int *temp2 = add(S0, m, 32);
+        i = g;
+        g = f;
+        f = e;
+        e = add(d, temp1, 32);
+        d = c;
+        c = b;
+        b = a;
+        a = add(temp1, temp2, 32);
+    }
+    int *aux0 = add(h[0], a, 32);
+    for (int j = 0; j < 32; j++) {
+        h[0][j] = aux0[j];
+    }
+    int *aux1 = add(h[1], b, 32);
+    for (int j = 0; j < 32; j++) {
+        h[1][j] = aux1[j];
+    }
+    int *aux2 = add(h[2], c, 32);
+    for (int j = 0; j < 32; j++) {
+        h[2][j] = aux2[j];
+    }
+    int *aux3 = add(h[3], d, 32);
+    for (int j = 0; j < 32; j++) {
+        h[3][j] = aux3[j];
+    }
+    int *aux4 = add(h[4], e, 32);
+    for (int j = 0; j < 32; j++) {
+        h[4][j] = aux4[j];
+    }
+    int *aux5 = add(h[5], f, 32);
+    for (int j = 0; j < 32; j++) {
+        h[5][j] = aux5[j];
+    }
+    int *aux6 = add(h[6], g, 32);
+    for (int j = 0; j < 32; j++) {
+        h[6][j] = aux6[j];
+    }
+    int *aux7 = add(h[7], i, 32);
+    for (int j = 0; j < 32; j++) {
+        h[7][j] = aux7[j];
+    }
+    int *output = malloc((8 * 32) * sizeof(int));
+    int index = 0;
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 32; j++) {
+            output[index] = h[i][j];
+            index++;
+        }
+    }
+    return output;
 }
 
 int main(void) {
@@ -85,6 +123,11 @@ int main(void) {
     printf("Type a text: ");
     scanf("%s", inputMessage);
     // Calls the sha256 function
-    // Prints the final hash output
-    printf("Hash: %s\n", sha256(inputMessage));
+    // Prints the final hash output in binary
+    printf("Hash: ");
+    int *output = sha256(inputMessage);
+    for (int i = 0; i < 8 * 32; i++) {
+        printf("%c", output[i]);
+    }
+    printf("\n");
 }

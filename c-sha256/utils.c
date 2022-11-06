@@ -28,23 +28,19 @@ thraay *zipThree(int x[], int y[], int z[]) {
 }
 
 // Is True
-// Returns True if input "x" is equal to 1
-bool isTrue(int x) {
-    // printf("%c", x);
-    // printf("\n");
-    if (x == 1) {
-        return true;
+// Returns 48 (0 in ASCII) if input "x" is equal to 49 (1 in ASCII)
+int isTrue(int x) {
+    if (x == 49) {
+        return 48;
     } else {
-        return false;
+        return 49;
     }
 }
 
 // Simple If
 // If "i" is equal to 1 (True) it returns "y", else (False) it returns "z"
 int if_(int i, int y, int z) {
-    printf("%c %c %c", i, y, z);
-    printf("\n");
-    if (isTrue(i)) {
+    if (isTrue(i) == 48) {
         return y;
     } else {
         return z;
@@ -57,12 +53,12 @@ int if_(int i, int y, int z) {
 // If both the inputs == True, the output will be True
 // Otherwise, the output will be False
 int and_(int i, int j) {
-    return if_(i, j, 0);
+    return if_(i, j, 48);
 }
 // It does the same for lists
 int *AND(int x[], int y[]) {
     tuple *arrayOfTuples = zip(x, y);
-    static int andList[32];
+    int *andList = malloc(32 * sizeof(int));
 
     for (int i = 0; i < 32; i++) {
         andList[i] = and_(arrayOfTuples[i].number0, arrayOfTuples[i].number1);
@@ -74,13 +70,11 @@ int *AND(int x[], int y[]) {
 // NOT
 // It inverts (negates) the input
 int not_(int i) {
-    // printf("%c", i);
-    // printf("\n");
-    return if_(i, 0, 1);
+    return if_(i, 48, 49);
 }
 // It does the same for lists
 int *NOT(int x[]) {
-    static int notList[32];
+    int *notList = malloc(32 * sizeof(int));
 
     for (int i = 0; i < 32; i++) {
         notList[i] = not_(x[i]);
@@ -93,14 +87,12 @@ int *NOT(int x[]) {
 // If there's only one input == True, the output will be True
 // Otherwise, if there's no input == True, or if there's more than one input == True, the output will be False
 int xor_(int i, int j) {
-    // printf("%c %c", i, j);
-    // printf("\n");
     return if_(i, not_(j), j);
 }
 // It does the same for lists
 int *XOR(int x[], int y[]) {
     tuple *arrayOfTuples = zip(x, y);
-    static int xorList[32];
+    int *xorList = malloc(32 * sizeof(int));
 
     for (int i = 0; i < 32; i++) {
         xorList[i] = xor_(arrayOfTuples[i].number0, arrayOfTuples[i].number1);
@@ -112,14 +104,12 @@ int *XOR(int x[], int y[]) {
 // XORXOR
 // The output will be True if the number of values == True is odd
 int xorxor(int i, int j, int l) {
-    // printf("%c %c %c", i, j, l);
-    // printf("\n");
     return xor_(i, xor_(j, l));
 }
 // It does the same for lists
 int *XORXOR(int x[], int y[], int z[]) {
     thraay *arrayOfThraays = zipThree(x, y, z);
-    static int xorXorList[32];
+    int *xorXorList = malloc(32 * sizeof(int));
 
     for (int i = 0; i < 32; i++) {
         xorXorList[i] = xorxor(arrayOfThraays[i].number0, arrayOfThraays[i].number1, arrayOfThraays[i].number2);
@@ -187,9 +177,9 @@ int *shr(int x[], int size, int n) {
 // It takes two lists of bits and adds them
 int *add(int x[], int y[], int size) {
     int *sums = malloc(size * sizeof(int));
-    int c = 0;
+    int c = 48;
 
-    for (int i = size - 1; i > 0; i--) {
+    for (int i = size - 1; i >= 0; i--) {
         sums[i] = xorxor(x[i], y[i], c);
         c = maj(x[i], y[i], c);
     }

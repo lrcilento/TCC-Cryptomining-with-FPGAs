@@ -1,4 +1,3 @@
-#include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -19,7 +18,7 @@ thraay;
 
 tuple *zip(int x[], int y[]);
 thraay *zipThree(int x[], int y[], int z[]);
-bool isTrue(int x);
+int isTrue(int x);
 int if_(int i, int y, int z);
 int and_(int i, int j);
 int *AND(int x[], int y[]);
