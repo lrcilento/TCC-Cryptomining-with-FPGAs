@@ -1,12 +1,12 @@
 # TCC-Cryptomining-with-FPGAs
 
-#### To run the code, please do the following steps:
+#### To run the code, execute the following steps:
 
 ### Installing Clang
 
-See this step by step (preferably on Linux) https://clang.llvm.org/get_started.html 
+Check the installation step by step guide: https://clang.llvm.org/get_started.html 
 
 ### Compile
 ```clang main.c helpers.c utils.c```
 ### Execute
-```a.out```
+```./a.out```
