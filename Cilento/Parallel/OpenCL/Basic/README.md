@@ -1,4 +1,4 @@
-# 2D Wave Simulation Optimization in FPGA
+# SHA-256 Mining Simulation in FPGA
 
 ## Set up
 
@@ -8,12 +8,6 @@ Mintrop-exclusive steps:
 module load fpga-environment
 aocl compile-config
 aocl link-config
-```
-
-It is possible to configure the grid size and the number of total iterations.
-
-```bash
-make config nz=<z_dim> nx=<x_dim> iter=<iterations>
 ```
 
 ## Compilation
@@ -70,7 +64,3 @@ make clean
 ```
 
 ---
-
-## Plots
-
-The wave plotted is inside **./bin/plots** and the archive used by *plots.py* is inside **./bin/wavefield**.
